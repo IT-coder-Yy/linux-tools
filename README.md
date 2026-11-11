@@ -31,7 +31,15 @@ bash install-apps-skills.sh
 bash install-tools.sh
 ```
 
-只有这两个安装脚本，均为独立文件，自动选择 Arch / Ubuntu 安装方式；公共函数、包名映射和 Skills 来源直接写在各自脚本中。不需要 `lib/`、`manifests/` 或额外入口，也不从 `CATALOG.md` 解析命令；该文件只负责说明名称和用途。
+根目录只有这两个安装脚本，均为独立文件，自动选择 Arch / Ubuntu 安装方式；公共函数、包名映射和 Skills 来源直接写在各自脚本中。不需要 `lib/`、`manifests/` 或额外入口，也不从 `CATALOG.md` 解析命令；该文件只负责说明名称和用途。
+
+`bin` 是指向 [IT-coder-Yy/archtools](https://github.com/IT-coder-Yy/archtools) 的 **Git 子模块**，在 GitHub 上显示为 `bin @ 提交号` 的目录链接。父仓库只保存 `.gitmodules` 和提交引用，不复制这三个工具的源码。需要同时检出子模块时使用：
+
+```bash
+git clone --recurse-submodules https://github.com/IT-coder-Yy/linux-tools.git
+```
+
+已有克隆可在仓库目录执行 `git submodule update --init bin`。GitHub ZIP 和本地安装包不打包子模块源码；两个安装脚本仍可独立运行，不要求预先检出 `bin`。
 
 在任意入口末尾加 `--dry-run`，只展示安装范围和阶段；不会联网或修改系统。它不模拟未来的软件下载和依赖解析。
 
@@ -85,7 +93,7 @@ bash install-tools.sh
 
 QQ、腾讯会议、向日葵、Snipaste 使用核对过的官方固定版本链接；WPS 按公开官网按钮解析临时下载地址。上游撤掉旧包或修改页面时会失败。QQ、会议、WPS、向日葵可分别通过 `QQ_DEB_URL`、`WEMEET_DEB_URL`、`WPS_DEB_URL`、`SUNLOGIN_DEB_URL` 指定新的官方 HTTPS deb 地址后重试。DSH 插件若被上游判定不兼容，不自动添加风险豁免。
 
-`pack`、`pacr`、`pacd` 直接从 [tingfeng347/archtools](https://github.com/tingfeng347/archtools) 获取，不在本仓库内保存源码副本。Arch 安装时临时拉取上游，安装三条命令到 `~/.local/bin`，并把配套 AUR 审查提示词放到 `/usr/share/archtools/prompts/aur-review.md`；临时源码随该阶段结束清理。不会在安装过程中执行卸载或降级，也不额外引入 Flatpak。
+`pack`、`pacr`、`pacd` 从 `bin` 子模块对应的 [IT-coder-Yy/archtools](https://github.com/IT-coder-Yy/archtools) 获取。子模块记录固定提交；独立安装脚本仍按原有方式临时拉取该仓库当前默认分支，安装三条命令到 `~/.local/bin`，并把配套 AUR 审查提示词放到 `/usr/share/archtools/prompts/aur-review.md`；临时源码随该阶段结束清理。不会在安装过程中执行卸载或降级，也不额外引入 Flatpak。
 
 ## 验证与来源
 
