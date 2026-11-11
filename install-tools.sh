@@ -349,8 +349,8 @@ nerd_font() {
 }
 
 arch_extras() {
-    # 从上游获取命令和配套提示词；本仓库不保存 archtools 源码。
-    git clone --depth 1 https://github.com/tingfeng347/archtools.git "$TMP/archtools"
+    # 与 bin 子模块指向同一仓库；单独下载本脚本也能安装。
+    git clone --depth 1 https://github.com/IT-coder-Yy/archtools.git "$TMP/archtools"
     for name in pack pacr pacd; do
         install -Dm755 "$TMP/archtools/bin/$name" "$BIN/$name"
     done
