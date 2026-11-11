@@ -1,0 +1,64 @@
+# CLI / TUI
+abtop
+git
+lazygit
+github-cli
+lazydocker
+tmux
+yazi
+fzf
+btop
+htop
+fastfetch
+tokei
+aria2
+wget
+zip
+unrar
+vim
+nano
+neovim
+less
+genact
+smartmontools
+xdotool
+ripgrep
+ffmpeg
+imagemagick
+openssh
+ngrok
+paru
+yay-bin
+downgrade
+# Shell
+zsh
+fish
+starship
+# 开发环境与包；Node/npm 在独立阶段检查与安装
+python
+python-pip
+rust
+bun
+gcc
+make
+gdb
+base-devel
+uv
+texlive-meta
+texlive-langchinese
+# 容器与数据库
+docker
+docker-compose
+docker-buildx
+mysql
+mysql-clients
+valkey
+# 输入与字体
+fcitx5
+fcitx5-chinese-addons
+fcitx5-configtool
+fcitx5-gtk
+fcitx5-qt
+noto-fonts-cjk
+noto-fonts-emoji
+otf-atkinsonhyperlegiblemono-nerd
