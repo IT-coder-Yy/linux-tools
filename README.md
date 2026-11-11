@@ -57,19 +57,7 @@ curl -fsSL https://raw.githubusercontent.com/IT-coder-Yy/linux-tools/main/instal
 
 两组都运行即可覆盖本仓库的安装范围。完整名称、分类和用途见 [CATALOG.md](CATALOG.md)；其中 102 个清单目标会按平台合并、映射或跳过，不代表每个系统都安装 102 个独立软件包。
 
-### 2. 了解默认设置
-
-| 项目 | 安装后的行为 |
-| --- | --- |
-| **Shell 与提示符** | 新建 Zsh 配置时使用 Oh My Zsh 官方默认模板；保留已有 `.zshrc`。Powerlevel10k、Starship、自动建议和高亮只安装，不自动选用，也不切换默认 Shell。 |
-| **输入法与字体** | 安装 Fcitx5、中文组件及字体；输入法框架、终端字体需要自行选用，不自动替换 GNOME 的现有设置。 |
-| **AI Skills** | 安装到 `${CODEX_HOME:-$HOME/.codex}/skills`，已有同名目录保留。重启 Codex 后查看；AI CLI 本体在第二组安装。 |
-| **Python 工具** | 使用 uv 的隔离环境安装 Ruff、FastAPI / Uvicorn，不通过全局 pip 改动系统 Python；项目依赖仍由项目自行管理。 |
-| **账号与服务** | 登录、代理订阅、Docker 用户组和数据库密码由使用者配置；安装包可能按默认行为启动 Docker、MySQL、Valkey、SSH 或向日葵服务。 |
-
-Skills 源码保存在 `${XDG_DATA_HOME:-$HOME/.local/share}/linux-tools/skills-sources`，再链接到技能目录。安装时不执行 Skill 中描述的任务，也不打包旧电脑的技能副本。当前来源见 [安装脚本中的 `skill_sources`](install-apps-skills.sh)。
-
-### 3. 开始使用
+### 2. 开始使用
 
 用户级命令放在 `~/.local/bin`，Rust 工具可能在 `~/.cargo/bin`。若新终端找不到命令，执行：
 
@@ -102,20 +90,11 @@ bash install-tools.sh
 
 `--dry-run` 只列出范围和阶段，不联网、不安装，也不模拟下载或依赖解析。已有克隆可执行 `git submodule update --init bin` 补齐子模块；GitHub ZIP 不包含子模块源码，但两个安装脚本仍可独立运行。
 
-### 日志与重试
-
-日志和结果表保存在 `${XDG_DATA_HOME:-$HOME/.local/share}/linux-tools/logs`。基础依赖阶段失败会停止；其他阶段失败后继续执行余下步骤。任意阶段失败，最终退出码都会为非零。
-
-修复网络或上游问题后，重新执行同一个安装命令即可。包管理器负责已有软件，Shell 配置和同名 Skills 会保留。软件和 Skills 可能随上游更新，这不是锁定所有版本的系统镜像。
-
-QQ、腾讯会议、WPS、向日葵的官方下载地址变化时，可分别设置 `QQ_DEB_URL`、`WEMEET_DEB_URL`、`WPS_DEB_URL`、`SUNLOGIN_DEB_URL` 后重试。DSH 插件被上游判定不兼容时，脚本不会自动添加风险豁免。
-
 ### 平台差异
 
 - Ubuntu 跳过 KWin 特效和 yay、paru、downgrade、pack、pacr、pacd 等 Arch 专用工具，使用 `docker compose` 调用 Compose。
 - Typora 使用官方发行渠道，试用或许可证按软件自身规则处理；Ubuntu 的 WPS 中文和文件类型资源随官方 deb 安装。
 - Ubuntu Wayland 下，xdotool 的 X11 自动化、Snipaste 全局截图和腾讯会议共享可能受会话限制；脚本不会替换显示会话。
-- Go、CMake 不作为独立安装目标；构建软件时，包管理器仍可能按需安装编译依赖。
 
 ## 项目结构
 
@@ -130,5 +109,3 @@ linux-tools/
 ```
 
 `bin` 在 GitHub 上显示为 `bin @ 提交号`，指向 [IT-coder-Yy/archtools](https://github.com/IT-coder-Yy/archtools)，父仓库只记录引用。子模块固定到一个提交；独立安装脚本则拉取该仓库当前默认分支，将三条命令安装到 `~/.local/bin`，并安装配套 AUR 审查提示词。无需提前初始化 `bin`，也不额外引入 Flatpak。
-
-安装脚本已通过语法、静态检查和独立预览验证，Ubuntu 24.04 的系统包清单通过了依赖模拟；完整 GUI 软件、登录和实际功能尚未在全新实机上逐项验证。不在仓库中保留测试文件。
