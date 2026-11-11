@@ -61,9 +61,9 @@
 | paru | paru | Arch/AUR 软件安装助手 |
 | yay-bin | yay-bin | Arch/AUR 软件安装助手 |
 | downgrade | downgrade | 从缓存或 Arch 历史归档回退软件包 |
-| pack | pack | 基于 fzf 搜索、审查和安装包的自定义界面 |
-| pacr | pacr | 基于 fzf 的包卸载界面 |
-| pacd | pacd | 基于 fzf 的包降级界面 |
+| [pack](https://github.com/tingfeng347/archtools) | pack | 从 archtools 上游安装；基于 fzf 搜索、审查和安装包 |
+| [pacr](https://github.com/tingfeng347/archtools) | pacr | 从 archtools 上游安装；基于 fzf 卸载包 |
+| [pacd](https://github.com/tingfeng347/archtools) | pacd | 从 archtools 上游安装；基于 fzf 降级包 |
 ## Shell与插件
 
 | 名称 | 标识 | 作用 |

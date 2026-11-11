@@ -11,32 +11,27 @@ Arch Linux / Ubuntu 常用软件、开发工具与 AI Skills 一键安装。
 **应用软件 + Skills：**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/IT-coder-Yy/linux-tools/main/bootstrap.sh -o linux-tools-install.sh && bash linux-tools-install.sh apps
+curl -fsSL https://raw.githubusercontent.com/IT-coder-Yy/linux-tools/main/install-apps-skills.sh -o install-apps-skills.sh && bash install-apps-skills.sh
 ```
 
 **终端工具 + Shell + 开发包 + 容器数据库 + 输入支持 + DSH 插件：**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/IT-coder-Yy/linux-tools/main/bootstrap.sh -o linux-tools-install.sh && bash linux-tools-install.sh tools
+curl -fsSL https://raw.githubusercontent.com/IT-coder-Yy/linux-tools/main/install-tools.sh -o install-tools.sh && bash install-tools.sh
 ```
 
 每组都能单独运行；只安装第一组时，也会准备 git 和可用的 Node.js。两组都运行即可覆盖本仓库清单。sudo、AUR 构建审查可能需要交互确认；“一行命令”不表示完全无人值守。
 
 ## 下载后本地运行
 
-从 GitHub 的 **Code → Download ZIP** 下载并解压，进入目录后执行：
+从 GitHub 的 **Code → Download ZIP** 下载，或使用本地安装包。解压后进入目录执行：
 
 ```bash
 bash install-apps-skills.sh
 bash install-tools.sh
 ```
 
-也提供四个明确区分系统的入口，误用时会拒绝运行：
-
-| 系统 | 应用和 Skills | 其余工具 |
-| --- | --- | --- |
-| Arch | `bash install-apps-skills-arch.sh` | `bash install-tools-arch.sh` |
-| Ubuntu 24.04 | `bash install-apps-skills-ubuntu.sh` | `bash install-tools-ubuntu.sh` |
+只有这两个安装脚本，均为独立文件，自动选择 Arch / Ubuntu 安装方式；公共函数、包名映射和 Skills 来源直接写在各自脚本中。不需要 `lib/`、`manifests/` 或额外入口，也不从 `CATALOG.md` 解析命令；该文件只负责说明名称和用途。
 
 在任意入口末尾加 `--dry-run`，只展示安装范围和阶段；不会联网或修改系统。它不模拟未来的软件下载和依赖解析。
 
@@ -68,7 +63,7 @@ bash install-tools.sh
 
 ### Skills 安装方式
 
-使用 `git clone --depth 1` 拉取 [来源清单](manifests/skills.tsv) 中的完整上游仓库，然后把选中的目录链接到 `${CODEX_HOME:-$HOME/.codex}/skills`。仓库源码保存在 `${XDG_DATA_HOME:-$HOME/.local/share}/linux-tools/skills-sources`，共享的 assets/references/scripts 会一并保留。
+使用 `git clone --depth 1` 拉取 [应用安装脚本](install-apps-skills.sh) 内 `skill_sources` 列出的完整上游仓库，然后把选中的目录链接到 `${CODEX_HOME:-$HOME/.codex}/skills`。仓库源码保存在 `${XDG_DATA_HOME:-$HOME/.local/share}/linux-tools/skills-sources`，共享的 assets/references/scripts 会一并保留。
 
 不会把旧电脑上的 Skills 副本打包进本项目，也不会执行这些 Skill 的任务。上游版本会演进；核对时 9 个目标目录对应 32 个 SKILL.md，未来数量和内容可能变化。已有同名 Skill 保留，不覆盖；重启 Codex 后检查可用技能。第一组仅放置技能文件，使用 AI CLI 本体还需安装第二组，或使用已有的 Codex 应用。
 
@@ -90,14 +85,12 @@ bash install-tools.sh
 
 QQ、腾讯会议、向日葵、Snipaste 使用核对过的官方固定版本链接；WPS 按公开官网按钮解析临时下载地址。上游撤掉旧包或修改页面时会失败。QQ、会议、WPS、向日葵可分别通过 `QQ_DEB_URL`、`WEMEET_DEB_URL`、`WPS_DEB_URL`、`SUNLOGIN_DEB_URL` 指定新的官方 HTTPS deb 地址后重试。DSH 插件若被上游判定不兼容，不自动添加风险豁免。
 
-本项目保留的 `bin/pack`、`bin/pacr`、`bin/pacd` 是自定义 Arch 包管理脚本源码。它们仅被安装，不会在安装过程中执行卸载或降级。
+`pack`、`pacr`、`pacd` 直接从 [tingfeng347/archtools](https://github.com/tingfeng347/archtools) 获取，不在本仓库内保存源码副本。Arch 安装时临时拉取上游，安装三条命令到 `~/.local/bin`，并把配套 AUR 审查提示词放到 `/usr/share/archtools/prompts/aur-review.md`；临时源码随该阶段结束清理。不会在安装过程中执行卸载或降级，也不额外引入 Flatpak。
 
 ## 验证与来源
 
-```bash
-python3 -m unittest discover -s tests -v
-```
+不保留测试目录。可用 `bash -n install-apps-skills.sh && bash -n install-tools.sh` 检查语法，或分别加 `--dry-run` 预览范围。
 
-核对日期：2026-11-11。9 项离线测试通过，安装脚本通过 Bash 语法与 ShellCheck 检查；67 个 Ubuntu 显式包已在一次性 Ubuntu 24.04 容器内通过 `apt-get -s install` 依赖模拟；官方 GitHub Release 文件匹配和主要应用下载地址已核对。完整 GUI 安装、登录、截图、输入法与数据库运行效果未在全新实机上逐项验证。
+核对日期：2026-11-11。本次精简核对两个脚本的独立运行、系统分支、内嵌包清单与解析逻辑，并检查 Bash 语法和 ShellCheck。67 个 Ubuntu 显式包在精简前已通过 Ubuntu 24.04 容器的依赖模拟，本次包集合未改变。完整 GUI 安装、登录、截图、输入法与数据库运行效果未在全新实机上逐项验证。
 
 主要官方来源：[VS Code](https://code.visualstudio.com/docs/setup/linux)、[Typora](https://support.typora.io/Typora-on-Linux/)、[Snipaste](https://www.snipaste.com/download.html)、[微信](https://linux.weixin.qq.com/)、[QQ](https://im.qq.com/linuxqq/index.shtml)、[腾讯会议](https://source.meeting.qq.com/download-center.html)、[WPS](https://linux.wps.cn/)、[向日葵](https://sunlogin.oray.com/)、[Node.js](https://nodejs.org/dist/latest-v24.x/)、[uv](https://docs.astral.sh/uv/getting-started/installation/)、[ngrok](https://ngrok.com/download/linux)。其他下载使用清单所列作者的 GitHub Releases、官方发行版软件源或对应语言包管理器。
